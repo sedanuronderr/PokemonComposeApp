@@ -39,7 +39,7 @@ fun parseStateToColor(stat: Stat):Color{
     return when(stat.stat.name.toLowerCase()){
         "hp"->HPColor
          "attack"->AtkColor
-         "defence"->DefColor
+         "defense"->DefColor
 
         "special-attack"->SpAtkColor
          "special-defense"->SpDefColor
