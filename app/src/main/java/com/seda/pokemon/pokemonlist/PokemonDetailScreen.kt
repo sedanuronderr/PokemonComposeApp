@@ -1,6 +1,8 @@
 package com.seda.pokemon.pokemonlist
 
 import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,10 +17,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.produceState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,12 +61,14 @@ fun PokemonDetailScreen(
         value = viewModel.getPokemonInfo(pokemonName = pokemonName)
     }.value
 
+    //Background color
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(dominantColor)
             .padding(bottom = 16.dp)
     ) {
+        //Toolbar ui
         PokemonDetailTopSection(
             navController = navController,
             modifier = Modifier
@@ -75,6 +76,8 @@ fun PokemonDetailScreen(
                 .fillMaxHeight(0.2f)
                 .align(Alignment.TopCenter)
         )
+
+        //Pokemon detail box added
         PokemonDetailStateWrapper(
             pokemonInfo = pokemonInfo,
             modifier = Modifier
@@ -85,11 +88,12 @@ fun PokemonDetailScreen(
                     end = 16.dp,
                     bottom = 16.dp
                 )
-                .shadow(10.dp, RoundedCornerShape(10.dp))
+                .shadow(10.dp, RoundedCornerShape(40.dp))
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colors.surface)
                 .padding(16.dp)
                 .align(Alignment.BottomCenter),
+
             loadingModifier = Modifier
                 .size(100.dp)
                 .align(Alignment.Center)
@@ -100,6 +104,8 @@ fun PokemonDetailScreen(
                     bottom = 16.dp
                 )
         )
+
+        //Image added to center
         Box(
             contentAlignment = Alignment.TopCenter,
             modifier = Modifier.fillMaxSize()
@@ -119,6 +125,7 @@ fun PokemonDetailScreen(
     }
 }
 
+//Back button and Background color added
 @Composable
 fun PokemonDetailTopSection(
     navController: NavController,
@@ -181,6 +188,8 @@ fun PokemonDetailStateWrapper(
     }
 }
 
+
+// Pokemon detail added
 @Composable
 fun PokemonDetailSection(
     pokemonInfo: Pokemon,
@@ -239,6 +248,7 @@ fun PokemonTypeSection(types: List<Type>) {
     }
 }
 
+//kg and m data detail
 @Composable
 fun PokemonDetailDataSection(
     pokemonWeight: Int,
@@ -295,3 +305,26 @@ fun PokemonDetailDataItem(
     }
 }
 
+@Composable
+fun PokemonStat(
+    statName :String,
+    statValue:Int,
+    statMaxValue:Int,
+    statColor:Color,
+    height:Dp= 28.dp,
+    animDuration:Int=1000,
+    animDelay:Int=0
+){
+    val animationPlayed by remember{
+        mutableStateOf(false)
+    }
+    val curPercent = animateFloatAsState(
+        targetValue =if(animationPlayed){
+            statValue / statMaxValue.toFloat()
+        }else{
+             0f
+        },
+        animationSpec = tween(animDuration,animDelay)
+    )
+
+}
