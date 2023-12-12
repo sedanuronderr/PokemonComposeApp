@@ -2,7 +2,7 @@
 Pokedex demonstrates modern Android development with Hilt, Material Motion, Coroutines, Flow, Jetpack (Room, ViewModel) based on MVVM architecture.
 
 
-
+ 
 <table>
 
 <tr>
